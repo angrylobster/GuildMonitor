@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuildListFragment extends Fragment {
 
     private static final String TAG = "GuildListFragment";
 
+    private List<GuildMember> mGuildMembers = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private GuildAdapter mGuildAdapter;
 
@@ -37,17 +39,15 @@ public class GuildListFragment extends Fragment {
                 .findViewById(R.id.guild_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
+        setupAdapter();
 
         return view;
     }
 
-    private void updateUI(){
-        GuildMemberManager guildMemberManager = GuildMemberManager.get(getActivity());
-        List<GuildMember> guildMembers = guildMemberManager.getGuildMembers();
-
-        mGuildAdapter = new GuildAdapter(guildMembers);
-        mRecyclerView.setAdapter(mGuildAdapter);
+    private void setupAdapter(){
+        if (isAdded()){
+            mRecyclerView.setAdapter(new GuildAdapter(mGuildMembers));
+        }
     }
 
     private class GuildHolder extends RecyclerView.ViewHolder{
@@ -67,7 +67,6 @@ public class GuildListFragment extends Fragment {
         public void bind(GuildMember member){
             mGuildMember = member;
 
-            mGuildMemberLevelView.setText(member.getmClass());
             mGuildMemberNameView.setText(member.getName());
         }
     }
@@ -97,12 +96,17 @@ public class GuildListFragment extends Fragment {
         }
     }
 
-    private class FetchItemsTask extends AsyncTask<Void, Void, Void>{
+    private class FetchItemsTask extends AsyncTask<Void, Void, List<GuildMember>>{
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            new APIFetcher().fetchItems();
-            return null;
+        protected List<GuildMember> doInBackground(Void... voids) {
+            return new APIFetcher().fetchItems();
+        }
+
+        @Override
+        protected void onPostExecute(List<GuildMember> memberList){
+            mGuildMembers = memberList;
+            setupAdapter();
         }
     }
 }
