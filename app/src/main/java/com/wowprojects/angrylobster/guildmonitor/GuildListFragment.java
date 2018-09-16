@@ -6,13 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class GuildListFragment extends Fragment {
     private class GuildHolder extends RecyclerView.ViewHolder{
 
         private TextView mGuildMemberNameView;
-        private TextView mGuildMemberLevelView;
+        private TextView mGuildMemberDetailsView;
 
         private GuildMember mGuildMember;
 
@@ -61,13 +59,19 @@ public class GuildListFragment extends Fragment {
             super(inflater.inflate(R.layout.list_guild_member_view, parent, false));
 
             mGuildMemberNameView = (TextView) itemView.findViewById(R.id.guild_member_name);
-            mGuildMemberLevelView = (TextView) itemView.findViewById(R.id.guild_member_class);
+            mGuildMemberDetailsView = (TextView) itemView.findViewById(R.id.guild_member_details);
         }
 
         public void bind(GuildMember member){
             mGuildMember = member;
 
+            String detailsString = "Level " + member.getLevel()
+                                    + " " + member.getRace()
+                                    + " " + member.getmClass()
+                                    + " " + member.getSpec();
+
             mGuildMemberNameView.setText(member.getName());
+            mGuildMemberDetailsView.setText(detailsString);
         }
     }
 
@@ -105,7 +109,8 @@ public class GuildListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<GuildMember> memberList){
-            mGuildMembers = memberList;
+            GuildMemberManager.get(getContext()).set(memberList);
+            mGuildMembers = GuildMemberManager.get(getContext()).getGuildMembers();
             setupAdapter();
         }
     }

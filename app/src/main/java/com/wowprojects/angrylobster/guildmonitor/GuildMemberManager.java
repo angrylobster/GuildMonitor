@@ -22,9 +22,6 @@ public class GuildMemberManager {
     private GuildMemberManager(Context context){
         mGuildMembers = new ArrayList<GuildMember>();
 
-//        for (int i = 0; i < 100; i++){
-//            mGuildMembers.add(new GuildMember("Member " + i, "Class " + i, "Race " + i, i));
-//        }
     }
 
     public GuildMember getGuildMember(String name){
@@ -38,5 +35,9 @@ public class GuildMemberManager {
 
     public List<GuildMember> getGuildMembers(){
         return mGuildMembers;
+    }
+
+    public void set(List<GuildMember> guildMembers){
+        mGuildMembers = guildMembers;
     }
 }
