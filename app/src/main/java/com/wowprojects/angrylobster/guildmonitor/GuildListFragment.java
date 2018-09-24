@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,16 +51,20 @@ public class GuildListFragment extends Fragment {
 
     private class GuildHolder extends RecyclerView.ViewHolder{
 
+        private TextView mGuildMemberCountView;
         private TextView mGuildMemberNameView;
         private TextView mGuildMemberDetailsView;
+        private ImageView mGuildMemberClassIconView;
 
         private GuildMember mGuildMember;
 
         public GuildHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.list_guild_member_view, parent, false));
 
+            mGuildMemberCountView = (TextView) itemView.findViewById(R.id.guild_member_count);
             mGuildMemberNameView = (TextView) itemView.findViewById(R.id.guild_member_name);
             mGuildMemberDetailsView = (TextView) itemView.findViewById(R.id.guild_member_details);
+//            mGuildMemberClassIconView = (ImageView) itemView.findViewById(R.id.guild_member_class_icon);
         }
 
         public void bind(GuildMember member){
@@ -67,9 +72,12 @@ public class GuildListFragment extends Fragment {
 
             String detailsString = "Level " + member.getLevel()
                                     + " " + member.getRace()
-                                    + " " + member.getmClass()
+                                    + " " + member.getClassString()
                                     + " " + member.getSpec();
 
+            String position = Integer.toString(getAdapterPosition() + 1);
+
+            mGuildMemberCountView.setText(position);
             mGuildMemberNameView.setText(member.getName());
             mGuildMemberDetailsView.setText(detailsString);
         }

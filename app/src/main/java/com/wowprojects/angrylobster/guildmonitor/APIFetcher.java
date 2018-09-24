@@ -112,7 +112,7 @@ public class APIFetcher {
             }
 
             member.setName(JSONMemberObject.getString("name"));
-            member.setClass(JSONMemberObject.getInt("class"));
+            member.setClassValue(JSONMemberObject.getInt("class"));
             member.setGender(JSONMemberObject.getInt("gender"));
             member.setLevel(JSONMemberObject.getInt("level"));
             member.setRace(JSONMemberObject.getInt("race"));

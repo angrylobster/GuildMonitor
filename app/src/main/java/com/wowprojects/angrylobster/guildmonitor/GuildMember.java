@@ -34,11 +34,15 @@ public class GuildMember {
         mName = name;
     }
 
-    public String getmClass() {
+    public int getClassValue(){
+        return mClass;
+    }
+
+    public String getClassString() {
         return classToString(mClass);
     }
 
-    public void setClass(int aClass) {
+    public void setClassValue(int aClass) {
         mClass = aClass;
     }
 
