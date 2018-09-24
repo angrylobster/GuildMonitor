@@ -20,7 +20,20 @@ public class APIFetcher {
     private static final String TAG = "APIFetcher";
     private static final String API_KEY = "j2qnaqav2wvb2kxmwtf9jbh9t83cfx3r";
 
-    public byte[] getURLBytes(String URLSpec) throws IOException{
+    public List<GuildMember> fetchGuildMembers(String type, String realm, String target){
+        List<GuildMember> guildMemberList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = getJSONObject(type, realm, target);
+            parseItems(guildMemberList, jsonObject);
+        } catch (IOException ioe){
+            Log.e(TAG, "Failed to fetch items", ioe);
+        } catch (JSONException je){
+            Log.e(TAG, "Failed to parse JSON", je);
+        }
+        return guildMemberList;
+    }
+
+    private byte[] getURLBytes(String URLSpec) throws IOException{
         URL url = new URL(URLSpec);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -48,39 +61,44 @@ public class APIFetcher {
         }
     }
 
-    public String getURLString(String URLSpec) throws IOException{
-        return new String(getURLBytes(URLSpec));
+    private JSONObject getJSONObject(String type, String realm, String target)
+            throws IOException, JSONException{
+
+        String url = buildURLString(type, realm, target);
+        String JSONString = new String(getURLBytes(buildURLString(type, realm, target)));
+        JSONObject jsonObject = new JSONObject(JSONString);
+
+        return jsonObject;
     }
 
-    public List<GuildMember> fetchItems(){
+    private String buildURLString(String type, String realm, String target){
 
-        List<GuildMember> membersList = new ArrayList<>();
+        Uri.Builder uriBuilder = new Uri.Builder();
 
-        try {
-            String url = Uri.parse("https://us.api.battle.net/wow/guild/barthilas/Last%20Warning")
-                    .buildUpon()
-                    .appendQueryParameter("fields", "members")
-                    .appendQueryParameter("locale", "en_US")
-                    .appendQueryParameter("apikey", API_KEY)
-                    .build().toString();
+        uriBuilder.scheme("https")
+                .authority("us.api.battle.net")
+                .appendPath("wow")
+                .appendPath(type)
+                .appendPath(realm)
+                .appendPath(target);
 
-            String JSONString = getURLString(url);
-//            Log.i(TAG, "Received JSON: " + JSONString);
-//            Log.i(TAG, "JSONString length is " + JSONString.length());
-            JSONObject JSONGuildMembers = new JSONObject(JSONString);
-
-            parseItems(membersList, JSONGuildMembers);
-        } catch (IOException ioe){
-            Log.e(TAG, "Failed to fetch items", ioe);
-        } catch (JSONException je){
-            Log.e(TAG, "Failed to parse JSON", je);
+        switch(type) {
+            case "guild":
+                uriBuilder.appendQueryParameter("fields", "members");
+                break;
+            case "character":
+                uriBuilder.appendQueryParameter("fields", "items");
+                break;
         }
 
-        return membersList;
+        uriBuilder.appendQueryParameter("locale", "en_US")
+                .appendQueryParameter("apikey", API_KEY);
+
+        return uriBuilder.build().toString();
     }
 
     private void parseItems(List<GuildMember> memberList, JSONObject JSONGuildMembersBody)
-            throws IOException, JSONException{
+            throws JSONException{
 
         JSONArray JSONMembersArray = JSONGuildMembersBody.getJSONArray("members");
 

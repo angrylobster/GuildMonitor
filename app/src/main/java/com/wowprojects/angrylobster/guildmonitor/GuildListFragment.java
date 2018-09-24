@@ -101,10 +101,9 @@ public class GuildListFragment extends Fragment {
     }
 
     private class FetchItemsTask extends AsyncTask<Void, Void, List<GuildMember>>{
-
         @Override
         protected List<GuildMember> doInBackground(Void... voids) {
-            return new APIFetcher().fetchItems();
+            return new APIFetcher().fetchGuildMembers("guild", "barthilas", "Last Warning");
         }
 
         @Override
