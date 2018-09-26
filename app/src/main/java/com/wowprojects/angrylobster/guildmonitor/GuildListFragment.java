@@ -1,5 +1,6 @@
 package com.wowprojects.angrylobster.guildmonitor;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,7 +54,8 @@ public class GuildListFragment extends Fragment {
 
         private TextView mGuildMemberCountView;
         private TextView mGuildMemberNameView;
-        private TextView mGuildMemberDetailsView;
+        private TextView mGuildMemberLevelView;
+        private TextView mGuildMemberRaceAndClassView;
         private ImageView mGuildMemberClassIconView;
 
         private GuildMember mGuildMember;
@@ -63,23 +65,28 @@ public class GuildListFragment extends Fragment {
 
             mGuildMemberCountView = (TextView) itemView.findViewById(R.id.guild_member_count);
             mGuildMemberNameView = (TextView) itemView.findViewById(R.id.guild_member_name);
-            mGuildMemberDetailsView = (TextView) itemView.findViewById(R.id.guild_member_details);
+            mGuildMemberLevelView = (TextView) itemView.findViewById(R.id.guild_member_level);
+            mGuildMemberRaceAndClassView = (TextView) itemView.findViewById(R.id.guild_member_race_and_class);
 //            mGuildMemberClassIconView = (ImageView) itemView.findViewById(R.id.guild_member_class_icon);
         }
 
         public void bind(GuildMember member){
             mGuildMember = member;
 
-            String detailsString = "Level " + member.getLevel()
-                                    + " " + member.getRace()
-                                    + " " + member.getClassString()
-                                    + " " + member.getSpec();
-
+            String levelString = "Level " + member.getLevel();
+            String raceAndClass = member.getRaceString() + " "
+                                + member.getClassString() + " "
+                                + member.getSpec();
             String position = Integer.toString(getAdapterPosition() + 1);
 
             mGuildMemberCountView.setText(position);
             mGuildMemberNameView.setText(member.getName());
-            mGuildMemberDetailsView.setText(detailsString);
+            mGuildMemberLevelView.setText(levelString);
+            mGuildMemberRaceAndClassView.setText(raceAndClass);
+
+            int color = getResources().getColor(getResources().getIdentifier(member.getClassString().replace(" ", "").toLowerCase(), "color", getActivity().getPackageName()));
+
+            mGuildMemberRaceAndClassView.setTextColor(color);
         }
     }
 
@@ -111,12 +118,16 @@ public class GuildListFragment extends Fragment {
     private class FetchItemsTask extends AsyncTask<Void, Void, List<GuildMember>>{
         @Override
         protected List<GuildMember> doInBackground(Void... voids) {
-            return new APIFetcher().fetchGuildMembers("guild", "barthilas", "Last Warning");
+            List<GuildMember> guildMemberList = new APIFetcher()
+                    .fetchGuildMembers("guild", "barthilas", "Last Warning");
+
+            GuildMemberManager.get(getContext()).set(guildMemberList);
+            return guildMemberList;
         }
 
         @Override
         protected void onPostExecute(List<GuildMember> memberList){
-            GuildMemberManager.get(getContext()).set(memberList);
+            GuildMemberManager.get(getActivity()).sortByName();
             mGuildMembers = GuildMemberManager.get(getContext()).getGuildMembers();
             setupAdapter();
         }

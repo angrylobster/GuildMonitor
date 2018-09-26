@@ -104,18 +104,21 @@ public class APIFetcher {
 
         for (int i = 0; i < JSONMembersArray.length(); i++){
             JSONObject JSONMemberObject = JSONMembersArray.getJSONObject(i).getJSONObject("character");
+            int rank = JSONMembersArray.getJSONObject(i).getInt("rank");
+            String spec = "";
 
-            GuildMember member = new GuildMember();
-            
-            if (JSONMemberObject.has("spec")){
-                member.setSpec(JSONMemberObject.getJSONObject("spec").getString("name"));
+            if(JSONMemberObject.has("spec")){
+                spec = JSONMemberObject.getJSONObject("spec").getString("name");
             }
 
-            member.setName(JSONMemberObject.getString("name"));
-            member.setClassValue(JSONMemberObject.getInt("class"));
-            member.setGender(JSONMemberObject.getInt("gender"));
-            member.setLevel(JSONMemberObject.getInt("level"));
-            member.setRace(JSONMemberObject.getInt("race"));
+            GuildMember member = new GuildMember(
+                    JSONMemberObject.getString("name"),
+                    JSONMemberObject.getInt("class"),
+                    JSONMemberObject.getInt("race"),
+                    JSONMemberObject.getInt("gender"),
+                    JSONMemberObject.getInt("level"),
+                    spec,
+                    rank);
 
             memberList.add(member);
         }

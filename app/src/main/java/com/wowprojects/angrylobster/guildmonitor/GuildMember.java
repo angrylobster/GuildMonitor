@@ -7,23 +7,16 @@ public class GuildMember {
     private int mGender;
     private int mLevel;
     private String mSpec;
+    private int mRank;
 
-    public GuildMember(){
-        mName = null;
-        mClass = -1;
-        mRace = -1;
-        mGender = -1;
-        mLevel = -1;
-        mSpec = null;
-    }
-
-    public GuildMember(String name, int aClass, int race, int gender, int level, String spec) {
+    public GuildMember(String name, int aClass, int race, int gender, int level, String spec, int rank) {
         mName = name;
         mClass = aClass;
         mRace = race;
         mGender = gender;
         mLevel = level;
         mSpec = spec;
+        mRank = rank;
     }
 
     public String getName() {
@@ -38,16 +31,16 @@ public class GuildMember {
         return mClass;
     }
 
-    public String getClassString() {
-        return classToString(mClass);
+    public int getmClass() {
+        return mClass;
     }
 
     public void setClassValue(int aClass) {
         mClass = aClass;
     }
 
-    public String getRace() {
-        return raceToString(mRace);
+    public int getRace() {
+        return mRace;
     }
 
     public void setRace(int race) {
@@ -71,7 +64,7 @@ public class GuildMember {
     }
 
     public String getSpec() {
-        if (mSpec == null){
+        if (mSpec == null || mSpec == ""){
             return "";
         } else {
             return "(" + mSpec + ")";
@@ -82,9 +75,21 @@ public class GuildMember {
         mSpec = spec;
     }
 
-    private String raceToString(int race){
+    public int getRank() {
+        return mRank;
+    }
+
+    public void setRank(int rank) {
+        mRank = rank;
+    }
+
+//    public int getColorValue() {
+//        return R.color;
+//    }
+
+    public String getRaceString(){
         String raceString = "";
-        switch (race){
+        switch (mRace){
             case 1:
                 raceString = "Human";
                 break;
@@ -151,9 +156,9 @@ public class GuildMember {
         return raceString;
     }
 
-    private String classToString(int aClass){
+    public String getClassString(){
         String classString = "";
-        switch (aClass){
+        switch (mClass){
             case 1:
                 classString = "Warrior";
                 break;
