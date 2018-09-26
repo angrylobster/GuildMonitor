@@ -1,5 +1,6 @@
 package com.wowprojects.angrylobster.guildmonitor;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class GuildListFragment extends Fragment {
         }
     }
 
-    private class GuildHolder extends RecyclerView.ViewHolder{
+    private class GuildHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mGuildMemberCountView;
         private TextView mGuildMemberNameView;
@@ -67,6 +68,8 @@ public class GuildListFragment extends Fragment {
             mGuildMemberNameView = (TextView) itemView.findViewById(R.id.guild_member_name);
             mGuildMemberLevelView = (TextView) itemView.findViewById(R.id.guild_member_level);
             mGuildMemberRaceAndClassView = (TextView) itemView.findViewById(R.id.guild_member_race_and_class);
+
+            itemView.setOnClickListener(this);
 //            mGuildMemberClassIconView = (ImageView) itemView.findViewById(R.id.guild_member_class_icon);
         }
 
@@ -87,6 +90,12 @@ public class GuildListFragment extends Fragment {
             int color = getResources().getColor(getResources().getIdentifier(member.getClassString().replace(" ", "").toLowerCase(), "color", getActivity().getPackageName()));
 
             mGuildMemberRaceAndClassView.setTextColor(color);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = GuildMemberActivity.newIntent(getActivity(), mGuildMember.getName());
+            startActivity(intent);
         }
     }
 
