@@ -1,6 +1,8 @@
 package com.wowprojects.angrylobster.guildmonitor;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -75,25 +77,32 @@ public class APIFetcher {
 
         Uri.Builder uriBuilder = new Uri.Builder();
 
-        uriBuilder.scheme("https")
-                .authority("us.api.battle.net")
-                .appendPath("wow")
-                .appendPath(type)
-                .appendPath(realm)
-                .appendPath(target);
-
         switch(type) {
             case "guild":
-                uriBuilder.appendQueryParameter("fields", "members");
+                uriBuilder.scheme("https")
+                        .authority("us.api.battle.net")
+                        .appendPath("wow")
+                        .appendPath(type)
+                        .appendPath(realm)
+                        .appendPath(target)
+                        .appendQueryParameter("fields", "members")
+                        .appendQueryParameter("locale", "en_US")
+                        .appendQueryParameter("apikey", API_KEY);
                 break;
             case "character":
-                uriBuilder.appendQueryParameter("fields", "items");
+                uriBuilder.scheme("https")
+                        .authority("raider.io")
+                        .appendPath("api")
+                        .appendPath("v1")
+                        .appendPath("characters")
+                        .appendPath("profile")
+                        .appendQueryParameter("region", "us")
+                        .appendQueryParameter("realm", realm)
+                        .appendQueryParameter("name", target)
+                        .appendQueryParameter("fields", "gear")
+                        .appendEncodedPath(",raid_progression,mythic_plus_scores");
                 break;
         }
-
-        uriBuilder.appendQueryParameter("locale", "en_US")
-                .appendQueryParameter("apikey", API_KEY);
-
         return uriBuilder.build().toString();
     }
 
@@ -118,7 +127,8 @@ public class APIFetcher {
                     JSONMemberObject.getInt("gender"),
                     JSONMemberObject.getInt("level"),
                     spec,
-                    rank);
+                    rank,
+                    JSONMemberObject.getString("thumbnail"));
 
             memberList.add(member);
         }

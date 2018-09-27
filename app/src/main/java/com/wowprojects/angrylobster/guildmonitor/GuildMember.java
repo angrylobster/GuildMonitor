@@ -8,8 +8,10 @@ public class GuildMember {
     private int mLevel;
     private String mSpec;
     private int mRank;
+    private String mProfilePictureString;
 
-    public GuildMember(String name, int aClass, int race, int gender, int level, String spec, int rank) {
+    public GuildMember(String name, int aClass, int race, int gender,
+                       int level, String spec, int rank, String profilePictureString) {
         mName = name;
         mClass = aClass;
         mRace = race;
@@ -17,6 +19,7 @@ public class GuildMember {
         mLevel = level;
         mSpec = spec;
         mRank = rank;
+        mProfilePictureString = profilePictureString;
     }
 
     public String getName() {
@@ -83,9 +86,13 @@ public class GuildMember {
         mRank = rank;
     }
 
-//    public int getColorValue() {
-//        return R.color;
-//    }
+    public String getProfilePictureString() {
+        return mProfilePictureString;
+    }
+
+    public void setProfilePictureString(String profilePictureString) {
+        mProfilePictureString = profilePictureString;
+    }
 
     public String getRaceString(){
         String raceString = "";
