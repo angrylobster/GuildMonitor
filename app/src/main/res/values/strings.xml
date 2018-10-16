@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">GuildMonitor</string>
+    <string name="item_level">Item Level: </string>
+    <string name="uldir">Uldir</string>
+    <string name="normal">Normal: </string>
+    <string name="heroic">Heroic: </string>
+    <string name="mythic">Mythic: </string>
+    <string name="slash_8">/8</string>
+    <string name="raid_uldir">Raid (Uldir)</string>
+    <string name="mythic_raid_info">Mythic+ Info</string>
+    <string name="raiderio_score">Raider.io Score: </string>
+    <string-array name="realm_arrays">
+        <item>Select realm</item>
+        <item>US</item>
+        <item>EU</item>
+    </string-array>
+    <string name="guild_name_hint">Enter Guild Name</string>
+    <string name="search">Search</string>
 </resources>

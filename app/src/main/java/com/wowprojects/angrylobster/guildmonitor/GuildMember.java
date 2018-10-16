@@ -8,6 +8,7 @@ public class GuildMember {
     private int mLevel;
     private String mSpec;
     private int mRank;
+
     private String mProfilePictureString;
 
     public GuildMember(String name, int aClass, int race, int gender,

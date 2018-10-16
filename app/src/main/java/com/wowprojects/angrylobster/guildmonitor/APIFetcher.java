@@ -35,6 +35,18 @@ public class APIFetcher {
         return guildMemberList;
     }
 
+    public JSONObject fetchMemberObject(String type, String realm, String target){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = getJSONObject(type, realm, target);
+        } catch (IOException ioe){
+            Log.e(TAG, "Failed to fetch items", ioe);
+        } catch (JSONException je){
+            Log.e(TAG, "Failed to parse JSON", je);
+        }
+        return jsonObject;
+    }
+
     private byte[] getURLBytes(String URLSpec) throws IOException{
         URL url = new URL(URLSpec);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -99,8 +111,7 @@ public class APIFetcher {
                         .appendQueryParameter("region", "us")
                         .appendQueryParameter("realm", realm)
                         .appendQueryParameter("name", target)
-                        .appendQueryParameter("fields", "gear")
-                        .appendEncodedPath(",raid_progression,mythic_plus_scores");
+                        .appendQueryParameter("fields", "gear,raid_progression,mythic_plus_scores");
                 break;
         }
         return uriBuilder.build().toString();

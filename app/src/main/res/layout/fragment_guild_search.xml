@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    
+    <Spinner
+        android:id="@+id/realm_spinner"
+        android:layout_width="170dp"
+        android:autofillHints=""
+        android:layout_height="wrap_content" />
+    
+    <EditText
+        android:id="@+id/guild_edit_text"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/guild_name_hint"/>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/search"/>
+
+</LinearLayout>
