@@ -76,12 +76,6 @@ public class GuildSearchFragment extends Fragment {
                     Intent intent = GuildListActivity.newIntent(getActivity(), mSelectedRealm,
                             guildSearched);
                     startActivity(intent);
-//                    startActivity(intent);
-//                    Toast.makeText(getContext(), "You selected the realm " +
-//                            intent.getSerializableExtra(GuildListActivity.EXTRA_REALM) +
-//                            " and the guild " +
-//                            intent.getSerializableExtra(GuildListActivity.EXTRA_GUILD_NAME),
-//                            Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -79,7 +79,7 @@ public class APIFetcher {
             throws IOException, JSONException{
 
         String url = buildURLString(type, realm, target);
-        String JSONString = new String(getURLBytes(buildURLString(type, realm, target)));
+        String JSONString = new String(getURLBytes(url));
         JSONObject jsonObject = new JSONObject(JSONString);
 
         return jsonObject;
